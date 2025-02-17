@@ -2,12 +2,14 @@
 
 #SBATCH --job-name=mriqc_sub01
 #SBATCH --nodes=1
+#SBATCH --account=cgratton-ic
+#SBATCH --partition=IllinoisComputes
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=08:00:00
 #SBATCH --export=NONE
-#SBATCH --mail-user=YOUR_EMAIL
-#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=amt89@illinois.edu
+#SBATCH --mail-type=ALL
 
 # 1. Load Singularity (if needed on your cluster)
 module load singularity
@@ -15,7 +17,7 @@ module load singularity
 # 2. Define paths (edit as necessary)
 SINGULARITY_IMG="/project/illinois/las/psych/cgratton/networks-pm/7t/software/singularity_images/mriqc-0.16.1.sif"
 BIDS_DIR="/project/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids"
-OUTPUT_DIR="${BIDS_DIR}/derivatives/mrqc"
+OUTPUT_DIR="${BIDS_DIR}/derivatives/mriqc"
 WORK_DIR="${BIDS_DIR}/derivatives/work"  # optional, but recommended for large jobs
 
 # 3. Run MRIQC
