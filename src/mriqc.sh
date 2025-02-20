@@ -1,38 +1,52 @@
-#!/bin/bash
+#!/usr/bin/bash
 
-#SBATCH --job-name=mriqc_sub01
-#SBATCH --nodes=1
-#SBATCH --account=cgratton-ic
 #SBATCH --partition=IllinoisComputes
+#SBATCH --time=70:00:00
+#SBATCH --mem=64G
+#SBATCH --nodes=1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=32G
-#SBATCH --time=08:00:00
-#SBATCH --export=NONE
+#SBATCH --job-name=mriqc_7t
+#SBATCH --account=cgratton-ic
+# Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
+#SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/mriqc.out
+# ------------------------------------------
 
-# 1. Load Singularity (if needed on your cluster)
-module load singularity
+# SUBJECT (make an input eventually)
+subject="sub-01"
+
+# do singularity run
+echo "Begin Quality Control"
+
+# clean all modules
+module purge
 
 # 2. Define paths (edit as necessary)
-SINGULARITY_IMG="/project/illinois/las/psych/cgratton/networks-pm/7t/software/singularity_images/mriqc-0.16.1.sif"
-BIDS_DIR="/project/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids"
+SING_IMA="/projects/illinois/las/psych/cgratton/networks-pm/software/singularity_images"
+BIDS_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids"
 OUTPUT_DIR="${BIDS_DIR}/derivatives/mriqc"
-WORK_DIR="${BIDS_DIR}/derivatives/work"  # optional, but recommended for large jobs
+WORK_DIR="/projects/illinois/las/psych/cgratton/networks-pm/temp2"
 
-# 3. Run MRIQC
+
+mkdir -p ${OUTPUT_DIR}
+mkdir -p ${WORK_DIR}
+
+# 3. tell MRIQC where the templates are
+export SINGULARITYENV_TEMPLATEFLOW_HOME="/projects/illinois/las/psych/cgratton/Atlases/templateflow/"
+
+# 4. Run MRIQC
 singularity run --cleanenv \
-    -B /project:/project \
-    "${SINGULARITY_IMG}" \
-    "${BIDS_DIR}" \
-    "${OUTPUT_DIR}" \
+    --bind /projects/illinois/las/psych/cgratton,$SINGULARITYENV_TEMPLATEFLOW_HOME:/home/.cache/templateflow \
+    --bind ${BIDS_DIR}:/data \
+    --bind ${OUTPUT_DIR}:/out \
+    ${SING_IMA}/mriqc-0.16.1.sif \
+    /data \
+    /out \
     participant \
     --participant-label 01 \
     --fft-spikes-detector \
     --fd_thres 0.2 \
-    --despike \
-    --work-dir "${WORK_DIR}" \
-    --n_procs 8 \
-    --mem_gb 32
+    --despike 
 
 echo "MRIQC finished."
