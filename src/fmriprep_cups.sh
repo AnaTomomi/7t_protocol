@@ -3,14 +3,14 @@
 #SBATCH --partition=IllinoisComputes
 #SBATCH --time=72:00:00
 #SBATCH --mem=200G
-#SBATCH --ntasks=1
 #SBATCH --cpus-per-task=20
-#SBATCH --job-name=fmriprep_3t
+#SBATCH --ntasks=1
+#SBATCH --job-name=fmriprep_7t_cups
 #SBATCH --account=cgratton-ic
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
-#SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/7t/fmriprep_3t.out
+#SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/7t/fmriprep_cups.out
 # ------------------------------------------
 
 
@@ -18,9 +18,9 @@
 subject="sub-01"
 
 # set up some directory information
-BIDS_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_3t_bids/"
+BIDS_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids_cups/"
 DERIVS_DIR="derivatives/fmriprep"
-WORK_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/temp_fmriprep_3t/"
+WORK_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/temp_fmriprep_cups/"
 
 # Prepare derivatives folder, work dir, anat templates
 mkdir -p ${BIDS_DIR}/${DERIVS_DIR}
