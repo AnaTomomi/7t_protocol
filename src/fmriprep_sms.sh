@@ -19,7 +19,7 @@ subject="sub-01"
 
 # set up some directory information
 BIDS_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids_sms/"
-DERIVS_DIR="derivatives/fmriprep"
+DERIVS_DIR="derivatives/fmriprep-24.1.1"
 WORK_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/temp_fmriprep_sms/"
 
 # Prepare derivatives folder, work dir, anat templates
@@ -30,22 +30,12 @@ export SINGULARITYENV_TEMPLATEFLOW_HOME="/projects/illinois/las/psych/cgratton/A
 # Clear modules
 module purge
 
-# To reuse freesurfer directories
-mkdir -p ${BIDS_DIR}/derivatives/defaced_FS73_outputs
-if [ ! -d ${BIDS_DIR}/${DERIVS_DIR}/freesurfer ]; then
-    ln -s ${BIDS_DIR}/derivatives/defaced_FS73_outputs ${BIDS_DIR}/${DERIVS_DIR}/freesurfer
-fi
-
-# remove IsRunning files from Freesurfer
-find ${BIDS_DIR}/derivatives/defaced_FS73_outputs/sub-$subject/ -name "*IsRunning*" -type f -delete
-
-
 # do singularity run
 echo "Begin Preprocessing"
 
 singularity run --cleanenv \
     -B /projects/illinois/las/psych/cgratton,$SINGULARITYENV_TEMPLATEFLOW_HOME:/home/.cache/templateflow \
-        /projects/illinois/las/psych/cgratton/singularity_images/fmriprep-20.2.0.simg \
+        /projects/illinois/las/psych/cgratton/singularity_images/fmriprep-24.1.1.simg \
     ${BIDS_DIR} \
     ${BIDS_DIR}/${DERIVS_DIR} \
     participant --participant-label ${subject} \
