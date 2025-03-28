@@ -8,13 +8,13 @@
 %%%% PARAMS %%%%
 
 
-TR = 1.18; % Repetition Time in seconds (1.18 for CUPS, )
+TR = 1.945; % Repetition Time in seconds (1.18 for CUPS, 1.945 for SMS)
 dropFR = 5; % Number of frames to drop
-topDir = '/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids_cups/derivatives';
+topDir = '/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids_sms/derivatives';
 dataFolder = 'fmriprep-24.1.1';
 confoundsFolder = 'fmriprep-24.1.1';
 FDtype = 'fFD';
-outdir = '/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids_cups/derivatives/datalists/beforeqc'; % Output dir
+outdir = sprintf('%s/datalists/beforeqc', topDir); % Output dir
 
 %%%%%%
 
