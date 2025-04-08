@@ -4,6 +4,7 @@ subs = {'1'};
 
 main_path = '/projects/illinois/las/psych/cgratton/networks-pm';
 addpath(sprintf('%s/software/GrattonLab-General-Repo-master/FCProcess',main_path));
+addpath(sprintf('%s/software/nifti/',main_path));
 
 % Change cd into repo
 fcprocDir = sprintf('%s/7t/pilot_bids_sms/derivatives/FCPreproc-24.1.1/', main_path);

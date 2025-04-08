@@ -15,7 +15,7 @@
 
 
 # SUBJECT (make an input eventually)
-subject="sub-01"
+subject="sub-1"
 
 # set up some directory information
 BIDS_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids_cups/"

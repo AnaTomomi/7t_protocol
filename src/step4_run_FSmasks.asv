@@ -1,0 +1,23 @@
+% Define the list of subjects
+subs = {'01'}; %; separated
+
+addpath('/projects/illinois/las/psych/cgratton/networks-pm/software/GrattonLab-General-Repo-master/FCProcess');
+
+% Base path for the subject files
+fmriprepTopDir = '/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids_sms/derivatives/fmriprep-24.1.1/';
+params= '/projects/illinois/las/psych/cgratton/networks-pm/software/GrattonLab-General-Repo-master/FCProcess/make_fs_masks_params_UIUC.m';
+
+% Loop through each subject and call FDcalc_FMRIPREP_2020
+disp('Starting processing of subjects...');
+for i = 1:length(subs)
+    sub = subs{i};
+  
+    disp(['Processing subject: ', sub]);
+
+    main_dir = dir([fmriprepTopDir ]);
+
+    ses = 
+    make_fs_masks_erodeCSF(sub, fmriprepTopDir, params);
+end
+disp('Finished processing of subjects.');
+

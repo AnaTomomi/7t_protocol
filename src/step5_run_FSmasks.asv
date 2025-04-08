@@ -25,5 +25,11 @@ catch ME
     disp(['Error processing subject ', sub, ': ', ME.message]);
 end
 
+    sub = subs{i};
+  
+    disp(['Processing subject: ', sub]);
+
+    make_fs_masks_erodeCSF(sub, fmriprepTopDir, params);
+
 end
 
