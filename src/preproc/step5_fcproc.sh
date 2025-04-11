@@ -10,7 +10,7 @@
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
-#SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/7t/7t_protocol//%x_%j.out
+#SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/7t/logs/%x_%j.out
 #SBATCH --error=/projects/illinois/las/psych/cgratton/networks-pm/7t/logs/%x_%j.err
 # ------------------------------------------
 
@@ -27,9 +27,9 @@ if [ -z "$SUBJECT_ID" ]; then
 fi
 
 # Define directories
-main_path="/projects/illinois/las/psych/cgratton/networks-pm"
-SCRIPT_DIR="${main_path}/software/"
-LOG_DIR="/projects/illinois/las/psych/cgratton/member_directories/jchernicky/Logs/FCProc"
+main_path="/projects/illinois/las/psych/cgratton/networks-pm/7t"
+SCRIPT_DIR="${main_path}/7t_protocol/src/preproc"
+LOG_DIR="${main_path}/logs/FCProc"
 mkdir -p ${LOG_DIR}
 
 # Run MATLAB script with subject ID and log output
