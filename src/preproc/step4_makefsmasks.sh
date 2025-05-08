@@ -1,9 +1,9 @@
 #!/usr/bin/bash
 
 #SBATCH --partition=secondary
-#SBATCH --time=01:00:00
+#SBATCH --time=00:10:00
 #SBATCH -n 10
-#SBATCH --mem=50G
+#SBATCH --mem=10G
 #SBATCH --nodes=1
 #SBATCH --job-name=makefsmasks
 #SBATCH --account=cgratton-ic

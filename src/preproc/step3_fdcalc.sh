@@ -3,7 +3,7 @@
 #SBATCH --partition=secondary
 #SBATCH --time=00:05:00
 #SBATCH -n 10
-#SBATCH --mem=10G
+#SBATCH --mem=8G
 #SBATCH --nodes=1
 #SBATCH --job-name=FDCalc
 #SBATCH --account=cgratton-ic

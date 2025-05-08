@@ -8,7 +8,7 @@ software_path = '/projects/illinois/las/psych/cgratton/networks-pm/software';
 addpath(sprintf('%s/GrattonLab-General-Repo-master/motion_calc_utilities', software_path));
 addpath(sprintf('%s/bids-matlab', software_path));
 
-base_path = '/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids_cups/derivatives/datalists/beforeqc/';
+base_path = '/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_3t_bids/derivatives/datalists/beforeqc/';
 fmriprep = 'fmriprep-24.1.1'; %which version of fmriprep are you using?
 
 % Check if sub is provided

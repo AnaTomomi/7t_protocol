@@ -1,9 +1,9 @@
 #!/usr/bin/bash
 
 #SBATCH --partition=secondary
-#SBATCH --time=03:00:00
+#SBATCH --time=01:30:00
 #SBATCH -n 10
-#SBATCH --mem=500G
+#SBATCH --mem=300G
 #SBATCH --nodes=1
 #SBATCH --job-name=fcproc
 #SBATCH --account=cgratton-ic
