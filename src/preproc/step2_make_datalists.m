@@ -8,9 +8,9 @@
 %%%% PARAMS %%%%
 
 
-TR =0.594; % Repetition Time in seconds (1.18 for CUPS, 1.945 for SMS)
+TR =1.945; % Repetition Time in seconds (1.18 for CUPS, 1.945 for SMS, 0.594 for Aalto)
 dropFR = 5; % Number of frames to drop
-topDir = '/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_3t_bids/derivatives';
+topDir = '/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids_sms/derivatives';
 dataFolder = 'fmriprep-24.1.1';
 confoundsFolder = 'fmriprep-24.1.1';
 FDtype = 'fFD';

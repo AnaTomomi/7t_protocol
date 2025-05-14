@@ -1,17 +1,17 @@
 #!/usr/bin/bash
 
-#SBATCH --partition=secondary
+#SBATCH --partition=cglab
 #SBATCH --time=00:05:00
-#SBATCH -n 10
-#SBATCH --mem=8G
+#SBATCH -n 4
+#SBATCH --mem=4G
 #SBATCH --nodes=1
 #SBATCH --job-name=FDCalc
 #SBATCH --account=cgratton-ic
+#SBATCH --reservation=cglab_new
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
 #SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/7t/logs/%x_%j.out
-#SBATCH --error=/projects/illinois/las/psych/cgratton/networks-pm/7t/logs/%x_%j.err
 # ------------------------------------------
 
 # Load MATLAB module
