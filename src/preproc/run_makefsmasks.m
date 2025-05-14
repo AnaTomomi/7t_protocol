@@ -2,6 +2,7 @@ function run_makefsmasks(sub)
 
 main_path = '/projects/illinois/las/psych/cgratton/networks-pm';
 addpath(sprintf('%s/software/GrattonLab-General-Repo-master/FCProcess', main_path));
+addpath(sprintf('%s/software/nifti/',main_path));
 
 % Check if sub is provided
 if nargin < 1 || isempty(sub)
@@ -9,7 +10,7 @@ if nargin < 1 || isempty(sub)
 end
 
 % Base path for the subject files
-fmriprepTopDir = sprintf('%s/7t/pilot_bids_cups/derivatives/fmriprep-24.1.1/', main_path);
+fmriprepTopDir = sprintf('%s/7t/pilot_bids_sms/derivatives/fmriprep-24.1.1/', main_path);
 params= sprintf('%s/software/GrattonLab-General-Repo-master/FCProcess/make_fs_masks_params_UIUC.m', main_path);
 
 % Check if params file exists

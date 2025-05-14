@@ -11,7 +11,6 @@
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
 #SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/7t/logs/%x_%j.out
-#SBATCH --error=/projects/illinois/las/psych/cgratton/networks-pm/7t/logs/%x_%j.out
 # ------------------------------------------
 
 # Load MATLAB module

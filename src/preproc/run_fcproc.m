@@ -10,7 +10,7 @@ addpath(sprintf('%s/software/hline_vline/',main_path));
 % Change cd into repo
 outputDir = sprintf('%s/7t/pilot_3t_bids/derivatives/FCPreproc-24.1.1/', main_path);
 params= sprintf('%s/software/GrattonLab-General-Repo-master/FCProcess/make_fs_masks_params_UIUC.m', main_path);
-base_path= sprintf('%s/7t/pilot_bids_cups/derivatives/datalists/beforeqc/',main_path);
+base_path= sprintf('%s/7t/pilot_3t_bids/derivatives/datalists/beforeqc/',main_path);
 fmriprep = 'fmriprep-24.1.1';
 
 % Check if sub is provided
