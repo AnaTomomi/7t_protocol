@@ -1,0 +1,6 @@
+sub-1_ses-1_task-rest_run-1_space-MNI152NLin6Asym_res-1_desc-preproc_bold.nii.gz
+sub-1_ses-1_task-rest_run-2_space-MNI152NLin6Asym_res-1_desc-preproc_bold.nii.gz
+sub-1_ses-1_task-rest_run-3_space-MNI152NLin6Asym_res-1_desc-preproc_bold.nii.gz
+sub-1_ses-1_task-rest_run-4_space-MNI152NLin6Asym_res-1_desc-preproc_bold.nii.gz
+sub-1_ses-1_task-rest_run-5_space-MNI152NLin6Asym_res-1_desc-preproc_bold.nii.gz
+sub-1_ses-1_task-rest_run-6_space-MNI152NLin6Asym_res-1_desc-preproc_bold.nii.gz

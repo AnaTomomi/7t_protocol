@@ -1,26 +1,27 @@
 #!/usr/bin/bash
 
-#SBATCH --partition=IllinoisComputes
-#SBATCH --time=12:00:00
-#SBATCH --mem=150G
+#SBATCH --partition=cglab
+#SBATCH --time=1-23:30:00
+#SBATCH --mem=200G
 #SBATCH --cpus-per-task=20
 #SBATCH --ntasks=1
-#SBATCH --job-name=fmriprep_7t_sms
+#SBATCH --job-name=fmriprep_7t
 #SBATCH --account=cgratton-ic
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
-#SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/7t/fmriprep_sms-%j.out
+#SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/7t/freesurfer-%j.out
 # ------------------------------------------
 
 
 # SUBJECT (make an input eventually)
-subject="sub-1"
+subject=$2
+seq=$1
 
 # set up some directory information
-BIDS_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/pilot_bids_sms/"
-DERIVS_DIR="derivatives/fmriprep-24.1.1_nobbr"
-WORK_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/temp_fmriprep_sms/"
+BIDS_DIR=/projects/illinois/las/psych/cgratton/networks-pm/7t/pilots/${seq}/
+DERIVS_DIR="derivatives/fmriprep-24.1.1"
+WORK_DIR=/projects/illinois/las/psych/cgratton/networks-pm/7t/temp/${seq}/
 
 # Prepare derivatives folder, work dir, anat templates
 mkdir -p ${BIDS_DIR}/${DERIVS_DIR}
@@ -41,10 +42,10 @@ singularity run --cleanenv \
     participant --participant-label ${subject} \
     -w ${WORK_DIR} \
     --fs-license-file /projects/illinois/las/psych/cgratton/singularity_images/freesurfer_license.txt \
-    --output-spaces MNI152NLin6Asym:res-1 \
-    --force-no-bbr \
-    --ignore slicetiming \
-    --fd-spike-threshold 0.2 \
+    --output-spaces MNI152NLin6Asym:res-1:res-2:res-native T1w func \
+    --anat-only \
+    --skip-bids-validation \
+    --me-output-echos \
     --notrack \
 
 

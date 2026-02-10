@@ -1,0 +1,6 @@
+sub-1_ses-1_task-rest_run-1_fmriprep_zmdt_resid_ntrpl_bpss_zmdt.nii.gz
+sub-1_ses-2_task-rest_run-1_fmriprep_zmdt_resid_ntrpl_bpss_zmdt.nii.gz
+sub-1_ses-2_task-rest_run-2_fmriprep_zmdt_resid_ntrpl_bpss_zmdt.nii.gz
+sub-1_ses-2_task-rest_run-3_fmriprep_zmdt_resid_ntrpl_bpss_zmdt.nii.gz
+sub-1_ses-2_task-rest_run-4_fmriprep_zmdt_resid_ntrpl_bpss_zmdt.nii.gz
+sub-1_ses-2_task-rest_run-5_fmriprep_zmdt_resid_ntrpl_bpss_zmdt.nii.gz
