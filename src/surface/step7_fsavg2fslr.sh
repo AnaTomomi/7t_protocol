@@ -21,11 +21,18 @@ main_path="/projects/illinois/las/psych/cgratton/networks-pm"
 # Check if subject ID is provided
 if [ -z "$1" ]; then
     echo "Error: No subject ID provided."
-    echo "Usage: sbatch run_fdcalc.sh <SUBJECT_ID>"
+    echo "Usage: sbatch run_fdcalc.sh <SUBJECT_ID> <PARAMS_PATH>"
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    echo "Error: No params file provided."
+    echo "Usage: sbatch run_fdcalc.sh <SUBJECT_ID> <PARAMS_PATH>"
     exit 1
 fi
 
 SUBJECT_ID=$1 #the subject ID  is whatever comes after sub-
+PARAMS=$2 #full path of the params file
 
 # Define directories
 SCRIPT_DIR="${main_path}/software/GrattonLab-General-Repo"
@@ -36,7 +43,7 @@ mkdir -p ${LOG_DIR}
 echo "Running fsavg2fslr for subject: ${SUBJECT_ID}"
 
 # Run MATLAB script with subject ID and log output
-matlab -nodisplay -nosplash -r "addpath(genpath('${SCRIPT_DIR}')); PostFreeSurferPipeline_fsavg2fslr('${SUBJECT_ID}'); exit;" > ${LOG_DIR}/fsavg2fslr_${SUBJECT_ID}.log 2>&1
+matlab -nodisplay -nosplash -r "addpath(genpath('${SCRIPT_DIR}')); PostFreeSurferPipeline_fsavg2fslr('${SUBJECT_ID}','${PARAMS}'); exit;" > ${LOG_DIR}/fsavg2fslr_${SUBJECT_ID}.log 2>&1
 
 # Print completion message
 echo "fsavg2fslr completed for subject ${SUBJECT_ID}. Log saved to ${LOG_DIR}/fsavg2fslr_${SUBJECT_ID}.log"

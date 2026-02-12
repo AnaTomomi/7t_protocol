@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=20
 #SBATCH --job-name=fmriprep_7t
 #SBATCH --account=cgratton-ic
-#SBATCH --array=1-5%3
+#SBATCH --array=1-3%3
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
