@@ -7,7 +7,7 @@
 #SBATCH --nodes=1
 #SBATCH --job-name=fcproc
 #SBATCH --account=cgratton-ic
-#SBATCH --array=2-24
+#SBATCH --array=1-24
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
