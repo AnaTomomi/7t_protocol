@@ -7,7 +7,7 @@
 #SBATCH --nodes=1
 #SBATCH --job-name=postfcproc
 #SBATCH --account=cgratton-ic
-#SBATCH --array=1-24
+#SBATCH --array=1
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
@@ -21,7 +21,7 @@ module load matlab
 # Define directories
 main_path="/projects/illinois/las/psych/cgratton/networks-pm"
 SCRIPT_DIR="${main_path}/software/GrattonLab-General-Repo"
-LOG_DIR="${main_path}/sandbox/logs/"
+LOG_DIR="${main_path}/7t/logs/"
 mkdir -p ${LOG_DIR}
 
 # check the file list
@@ -48,4 +48,4 @@ echo "Processing file: $FILE"
 # Run MATLAB script with subject ID and log output
 matlab -nodisplay -nosplash -r "addpath(genpath('${SCRIPT_DIR}')); post_fc_processing_GrattonLab('${FILE}','${PARAMS}'); exit;" > ${LOG_DIR}/fcproc_${FILE}.log 2>&1
 
-echo "postFCProc completed for file ${FILE}. Log saved to ${LOG_DIR}/FCPROC_${FILE}.log"
+echo "postFCProc completed for file ${FILE}. Log saved to ${LOG_DIR}/postFCPROC_${FILE}.log"
