@@ -35,9 +35,9 @@ from step0_dicom2nii import parse_excel
 # ---------------------------------------------------------------------------
 # Hard-coded project paths (edit these for your environment)
 # ---------------------------------------------------------------------------
-SOURCEDATA_DIR   = '/Users/anatriana/Documents/7T/sourcedata'
+SOURCEDATA_DIR   = '/Users/anatriana/Documents/7T/HDnets/sourcedata'
 PROJECT_DIR      = os.path.dirname(SOURCEDATA_DIR)
-EXCEL_TEMPLATE   = os.path.join(PROJECT_DIR, 'sub-{sub_int}.xlsx')
+EXCEL_TEMPLATE   = os.path.join(PROJECT_DIR, 'sub-HD{sub_int}_datacollection-notes.xlsx')
 
 LAYNII_DIR              = '/Users/anatriana/Documents/software/LayNii'
 LN_MP2RAGE_DNOISE_BIN   = os.path.join(LAYNII_DIR, 'LN_MP2RAGE_DNOISE')
