@@ -35,10 +35,10 @@ import openpyxl
 # ---------------------------------------------------------------------------
 # Hard-coded project paths  (edit these for your environment)
 # ---------------------------------------------------------------------------
-XNAT_BASE_DIR  = '/Users/anatriana/Documents/7T/'
-SOURCEDATA_DIR = '/Users/anatriana/Documents/7T/sourcedata'   # TODO: update to real path
+XNAT_BASE_DIR  = '/Users/anatriana/Documents/7T/HDnets'
+SOURCEDATA_DIR = '/Users/anatriana/Documents/7T/HDnets/sourcedata'   # TODO: update to real path
 # Excel filename uses un-padded subject number: sub-1.xlsx, sub-2.xlsx, …
-EXCEL_TEMPLATE = os.path.join(XNAT_BASE_DIR, 'sub-{sub_int}.xlsx')
+EXCEL_TEMPLATE = os.path.join(XNAT_BASE_DIR, 'sub-HD{sub}_datacollection-notes.xlsx')
 
 # ---------------------------------------------------------------------------
 # Task label mapping: scanner / Excel column-B label  →  BIDS task name
@@ -92,6 +92,7 @@ ANAT_KEYWORDS = {
     'INV1':       'inv-1_MP2RAGE',
     'INV2':       'inv-2_MP2RAGE',
     'UNI_Images': 'UNIT1',
+    'T2_space':   'T2w',
 }
 
 # Excel column-B labels that denote anatomical (non-functional) acquisitions
@@ -260,8 +261,8 @@ def parse_excel(excel_path, ses):
         scan_name  = row[0]
         task_label = row[1]
         run_num    = row[2]
-        scan_ok    = row[3]   # col D: scan successful (technical)?
-        task_ok    = row[5]   # col F: task successful (technical)?
+        scan_ok    = row[4]   # col D: scan successful (technical)?
+        task_ok    = row[6]   # col F: task successful (technical)?
 
         if task_label is None:
             continue  # Localizer, InvPE fieldmap rows have no task label
@@ -660,7 +661,7 @@ def main():
     else:
         print('\n[Stage 0] Building scan_mapping.json...')
 
-        excel_path = EXCEL_TEMPLATE.format(sub_int=int(sub))
+        excel_path = EXCEL_TEMPLATE.format(sub=sub)
         print(f'  Excel : {excel_path}')
         excel_runs = parse_excel(excel_path, ses)
         print(f'  Rows  : {len(excel_runs)} functional task entries found')
