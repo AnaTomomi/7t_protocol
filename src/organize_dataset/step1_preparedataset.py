@@ -7,14 +7,18 @@ Prepares a session's sourcedata/ for fmriprep:
      INV1 + INV2 as auxiliary inputs).
   2. Rename the denoised image to the BIDS T1w convention.
   3. Deface the denoised T1w with pydeface.
-  4. Extract one volume from the first functional run of the session (per the
+  4. Delete the non-defaced MP2RAGE inputs (INV1, INV2, UNIT1) — only the
+     defaced T1w is kept.
+  5. Deface the T2w image in place (overwrites the raw T2w).
+  6. Extract one volume from the first functional run of the session (per the
      subject's Excel tracking sheet) and save it as a synthetic AP fieldmap.
-  5. Add IntendedFor (all included func runs of the session) to the existing
+  7. Add IntendedFor (all included func runs of the session) to the existing
      PA fieldmap json.
-  6. Copy that json to the new AP fieldmap.
+  8. Copy that json to the new AP fieldmap.
 
 Everything is read from and written back into sourcedata/ in place — there is
-no separate BIDS/ output directory for this step.
+no separate BIDS/ output directory for this step. Defacing is irreversible:
+once complete, sourcedata/ no longer contains non-defaced faces for T1 or T2.
 
 Usage:
     python step1_preparedataset.py --sub 01 --ses 01
@@ -37,7 +41,7 @@ from step0_dicom2nii import parse_excel
 # ---------------------------------------------------------------------------
 SOURCEDATA_DIR   = '/Users/anatriana/Documents/7T/sourcedata'
 PROJECT_DIR      = os.path.dirname(SOURCEDATA_DIR)
-EXCEL_TEMPLATE   = os.path.join(PROJECT_DIR, 'sub-{sub_int}.xlsx')
+EXCEL_TEMPLATE   = os.path.join(PROJECT_DIR, 'sub-HD{sub}_datacollection-notes.xlsx')
 
 LAYNII_DIR              = '/Users/anatriana/Documents/software/LayNii'
 LN_MP2RAGE_DNOISE_BIN   = os.path.join(LAYNII_DIR, 'LN_MP2RAGE_DNOISE')
@@ -78,7 +82,7 @@ def denoise_mp2rage(inv1_path, inv2_path, uni_path, out_path, beta=MP2RAGE_DNOIS
         raise RuntimeError(f'LN_MP2RAGE_DNOISE failed:\n{result.stderr}')
 
 
-def deface_t1w(in_path, out_path):
+def deface_anat(in_path, out_path):
     cmd = [PYDEFACE_BIN, '--outfile', out_path, '--force', in_path]
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
@@ -91,7 +95,7 @@ def deface_t1w(in_path, out_path):
 def first_excel_run(sub, ses):
     """First functional task row (in sheet order) from the subject's Excel that
     was marked successful (col D and col F both 'Y')."""
-    excel_path = EXCEL_TEMPLATE.format(sub_int=int(sub))
+    excel_path = EXCEL_TEMPLATE.format(sub=sub)
     excel_runs = parse_excel(excel_path, ses)
     successful = [r for r in excel_runs if r['successful']]
     if not successful:
@@ -156,27 +160,49 @@ def main():
     mapping = load_scan_mapping(sub_ses_dir)
 
     # ── 1+2+3: denoise MP2RAGE, rename to T1w, deface ──────────────────────
-    print('[Step 1] Denoising MP2RAGE (UNIT1) with LN_MP2RAGE_DNOISE...')
     inv1_path = os.path.join(anat_dir, f'sub-{sub}_ses-{ses}_inv-1_MP2RAGE.nii.gz')
+    inv1_json = os.path.join(anat_dir, f'sub-{sub}_ses-{ses}_inv-1_MP2RAGE.json')
     inv2_path = os.path.join(anat_dir, f'sub-{sub}_ses-{ses}_inv-2_MP2RAGE.nii.gz')
+    inv2_json = os.path.join(anat_dir, f'sub-{sub}_ses-{ses}_inv-2_MP2RAGE.json')
     uni_path  = os.path.join(anat_dir, f'sub-{sub}_ses-{ses}_UNIT1.nii.gz')
+    uni_json  = os.path.join(anat_dir, f'sub-{sub}_ses-{ses}_UNIT1.json')
     t1w_path  = os.path.join(anat_dir, f'sub-{sub}_ses-{ses}_T1w.nii.gz')
     t1w_json  = os.path.join(anat_dir, f'sub-{sub}_ses-{ses}_T1w.json')
-    uni_json  = os.path.join(anat_dir, f'sub-{sub}_ses-{ses}_UNIT1.json')
 
-    with tempfile.TemporaryDirectory(prefix='mp2rage_dnoise_out_') as tmp:
-        denoised_path = os.path.join(tmp, 'denoised.nii.gz')
-        denoise_mp2rage(inv1_path, inv2_path, uni_path, denoised_path)
+    if os.path.isfile(inv1_path) and os.path.isfile(inv2_path) and os.path.isfile(uni_path):
+        print('[Step 1] Denoising MP2RAGE (UNIT1) with LN_MP2RAGE_DNOISE...')
+        with tempfile.TemporaryDirectory(prefix='mp2rage_dnoise_out_') as tmp:
+            denoised_path = os.path.join(tmp, 'denoised.nii.gz')
+            denoise_mp2rage(inv1_path, inv2_path, uni_path, denoised_path)
 
-        print('[Step 2/3] Defacing denoised T1w with pydeface...')
-        deface_t1w(denoised_path, t1w_path)
+            print('[Step 2/3] Defacing denoised T1w with pydeface...')
+            deface_anat(denoised_path, t1w_path)
 
-    if os.path.isfile(uni_json) and os.path.getsize(uni_json) > 0:
-        shutil.copy2(uni_json, t1w_json)
-    print(f'  → {t1w_path}')
+        if os.path.isfile(uni_json) and os.path.getsize(uni_json) > 0:
+            shutil.copy2(uni_json, t1w_json)
+        print(f'  → {t1w_path}')
 
-    # ── 4: AP fieldmap from the first functional run (per Excel) ──────────
-    print('[Step 4] Building synthetic AP fieldmap...')
+        # ── 4: drop the non-defaced MP2RAGE inputs ─────────────────────────
+        print('[Step 4] Removing non-defaced MP2RAGE inputs...')
+        for raw_path in (inv1_path, inv1_json, inv2_path, inv2_json, uni_path, uni_json):
+            if os.path.isfile(raw_path):
+                os.remove(raw_path)
+                print(f'  removed {raw_path}')
+
+    # ── 5: deface T2w in place ─────────────────────────────────────────────
+    t2_path = os.path.join(anat_dir, f'sub-{sub}_ses-{ses}_T2w.nii.gz')
+    if os.path.isfile(t2_path):
+        print('[Step 5] Defacing T2w with pydeface...')
+        with tempfile.TemporaryDirectory(prefix='t2w_deface_') as tmp:
+            defaced_t2_path = os.path.join(tmp, 'defaced_T2w.nii.gz')
+            deface_anat(t2_path, defaced_t2_path)
+            shutil.move(defaced_t2_path, t2_path)
+        print(f'  → {t2_path} (defaced in place)')
+    else:
+        print('[Step 5] No T2w found — skipping T2 defacing.')
+
+    # ── 6: AP fieldmap from the first functional run (per Excel) ──────────
+    print('[Step 6] Building synthetic AP fieldmap...')
     bids_task, run = first_excel_run(sub, ses)
     bold_path = os.path.join(
         func_dir, f'sub-{sub}_ses-{ses}_task-{bids_task}_run-{run}_part-mag_bold.nii.gz')
@@ -187,15 +213,15 @@ def main():
     extract_first_volume(bold_path, ap_epi_path)
     print(f'  {bold_path} (volume 0) → {ap_epi_path}')
 
-    # ── 5: IntendedFor on the existing PA fieldmap json ────────────────────
-    print('[Step 5] Adding IntendedFor to the PA fieldmap json...')
+    # ── 7: IntendedFor on the existing PA fieldmap json ────────────────────
+    print('[Step 7] Adding IntendedFor to the PA fieldmap json...')
     pa_json_path = os.path.join(fmap_dir, f'sub-{sub}_ses-{ses}_dir-PA_epi.json')
     intended_for = build_intended_for(sub, ses, mapping)
     update_fmap_json(pa_json_path, intended_for)
     print(f'  {pa_json_path}  IntendedFor: {len(intended_for)} run(s)')
 
-    # ── 6: copy to the AP fieldmap json ────────────────────────────────────
-    print('[Step 6] Copying fieldmap json for the AP fieldmap...')
+    # ── 8: copy to the AP fieldmap json ────────────────────────────────────
+    print('[Step 8] Copying fieldmap json for the AP fieldmap...')
     ap_json_path = os.path.join(fmap_dir, f'sub-{sub}_ses-{ses}_dir-AP_epi.json')
     shutil.copy2(pa_json_path, ap_json_path)
     print(f'  → {ap_json_path}')
