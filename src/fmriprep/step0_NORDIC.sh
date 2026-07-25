@@ -3,16 +3,15 @@
 #SBATCH --partition=cglab
 #SBATCH --time=00:40:00
 #SBATCH -n 4
-#SBATCH --mem=30G
+#SBATCH --mem=50G
 #SBATCH --nodes=1
 #SBATCH --job-name=NORDIC
 #SBATCH --account=cgratton-ic
-#SBATCH --array=1-24
+#SBATCH --array=2-36
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
 #SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/7t/logs/%x_%j.out
-#SBATCH --error=/projects/illinois/las/psych/cgratton/networks-pm/7t/logs/%x_%j.err
 # ------------------------------------------
 
 # Load modules
