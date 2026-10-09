@@ -2,27 +2,26 @@
 
 #SBATCH --partition=cglab
 #SBATCH --time=23:55:00
-#SBATCH --mem=200G
+#SBATCH --mem=250G
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=20
 #SBATCH --job-name=fmriprep_7t
 #SBATCH --account=cgratton-ic
-#SBATCH --array=1-3%3
+#SBATCH --array=1
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
-#SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/replica/fmriprep-%j.out
+#SBATCH --output=/projects/illinois/las/psych/cgratton/networks-pm/7t/fmriprep-%j.out
 # ------------------------------------------
 
 # SUBJECT (make an input eventually)
-subject="1"
-seq=$1
-session="${SLURM_ARRAY_TASK_ID}"
+subject=$1
+session=$(printf "%02d" "${SLURM_ARRAY_TASK_ID}")
 
 # set up some directory information
-BIDS_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/pilots/${seq}/"
+BIDS_DIR="/projects/illinois/las/psych/cgratton/networks-pm/7t/HDnets/"
 DERIVS_DIR="derivatives/fmriprep-24.1.1"
-WORK_DIR_BASE="/projects/illinois/las/psych/cgratton/networks-pm/7t/temp/${seq}/"
+WORK_DIR_BASE="/projects/illinois/las/psych/cgratton/networks-pm/7t/temp/"
 WORK_DIR="${WORK_DIR_BASE}/ses-${session}"
 
 # Clear modules
@@ -66,11 +65,9 @@ singularity run --cleanenv \
     -w ${WORK_DIR} \
     participant --participant-label ${subject} \
     --fs-license-file /projects/illinois/las/psych/cgratton/singularity_images/freesurfer_license.txt \
-    --output-spaces MNI152NLin6Asym:res-1:res-2:res-native T1w func \
-    --ignore slicetiming \
+    --output-spaces MNI152NLin6Asym:res-1:res-native T1w func \
     --fd-spike-threshold 0.2 \
     --bids-filter-file ${WORK_DIR}/filters/filter-ses-${session}.json \
     -d fmriprep=${BIDS_DIR}/${DERIVS_DIR} \
-    --me-output-echos \
     --skip-bids-validation \
     --notrack \

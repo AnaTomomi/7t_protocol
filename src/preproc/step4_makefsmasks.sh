@@ -14,7 +14,7 @@
 # ------------------------------------------
 
 # Load MATLAB module
-module load matlab
+module load matlab/R2025b
 
 main_path="/projects/illinois/las/psych/cgratton/networks-pm"
 

@@ -7,7 +7,7 @@
 #SBATCH --nodes=1
 #SBATCH --job-name=postfcproc
 #SBATCH --account=cgratton-ic
-#SBATCH --array=1
+#SBATCH --array=1-6
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
 #SBATCH --mail-type=ALL
@@ -16,7 +16,7 @@
 # ------------------------------------------
 
 # Load MATLAB module
-module load matlab
+module load matlab/R2025b
 
 # Define directories
 main_path="/projects/illinois/las/psych/cgratton/networks-pm"
@@ -26,7 +26,7 @@ mkdir -p ${LOG_DIR}
 
 # check the file list
 FILE_LIST="${main_path}/7t/7t_protocol/src/surface/file_list.txt"
-PARAMS="/projects/illinois/las/psych/cgratton/networks-pm/software/GrattonLab-General-Repo/get_config_me.m"
+PARAMS="/projects/illinois/las/psych/cgratton/networks-pm/software/GrattonLab-General-Repo/get_config.m"
 
 # Check if file list exists
 if [ ! -f "$FILE_LIST" ]; then

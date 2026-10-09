@@ -1,11 +1,11 @@
 #!/usr/bin/bash
 
 #SBATCH --partition=cglab
-#SBATCH --time=1-23:30:00
-#SBATCH --mem=200G
+#SBATCH --time=23:00:00
+#SBATCH --mem=30G
 #SBATCH --cpus-per-task=20
 #SBATCH --ntasks=1
-#SBATCH --job-name=fmriprep_7t
+#SBATCH --job-name=freesurfer_7t
 #SBATCH --account=cgratton-ic
 # Outputs ----------------------------------
 #SBATCH --mail-user=amt89@illinois.edu
@@ -15,13 +15,12 @@
 
 
 # SUBJECT (make an input eventually)
-subject=$2
-seq=$1
+subject=$1
 
 # set up some directory information
-BIDS_DIR=/projects/illinois/las/psych/cgratton/networks-pm/7t/pilots/${seq}/
+BIDS_DIR=/projects/illinois/las/psych/cgratton/networks-pm/7t/HDnets/
 DERIVS_DIR="derivatives/fmriprep-24.1.1"
-WORK_DIR=/projects/illinois/las/psych/cgratton/networks-pm/7t/temp/${seq}/
+WORK_DIR=/projects/illinois/las/psych/cgratton/networks-pm/7t/temp/
 
 # Prepare derivatives folder, work dir, anat templates
 mkdir -p ${BIDS_DIR}/${DERIVS_DIR}
@@ -42,10 +41,9 @@ singularity run --cleanenv \
     participant --participant-label ${subject} \
     -w ${WORK_DIR} \
     --fs-license-file /projects/illinois/las/psych/cgratton/singularity_images/freesurfer_license.txt \
-    --output-spaces MNI152NLin6Asym:res-1:res-2:res-native T1w func \
+    --output-spaces MNI152NLin6Asym:res-1:res-native T1w func \
     --anat-only \
     --skip-bids-validation \
-    --me-output-echos \
     --notrack \
 
 
