@@ -16,21 +16,22 @@ clear all
 clc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% USER INPUTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-main_path = '/projects/illinois/las/psych/cgratton';
-scanner = '7T';   % '7T' or '3T'
+main_path = '/Volumes/illinois-las-psych-gratton';
+%main_path = '/projects/illinois/las/psych/cgratton';
+scanner = getenv('SCANNER'); if isempty(scanner), scanner = '7T'; end   % '7T' or '3T' (set by run_prepare_BOLDdata_3Tvs7T.sh)
 
 switch scanner
     case '7T'
         subj = {'sub-01'};
-        FCdir = [main_path '/networks-pm/7t/HDnets/derivatives/FCproc-24.1.1'];
+        FCdir = [main_path '/networks-pm/7t/HDnets/derivatives/FCPreproc-24.1.1'];
         fmriprepdir = [main_path '/networks-pm/7t/HDnets/derivatives/fmriprep-24.1.1'];
         atlas = 'Seitzman300-res1';
         TR = 2;
     case '3T'
         subj = {'sub-HUBS03'};
-        FCdir = [main_path '/<PAN path>/FCpreproc-24.1.1'];   % <-- fill in
-        fmriprepdir = [main_path '/<PAN path>/fmriprep'];     % <-- fill in
-        atlas = 'Seitzman300-res2';
+        FCdir = [main_path '/NSF_HUBS/Nifti/derivatives/FCPreproc-23.2.0'];   % <-- fill in
+        fmriprepdir = [main_path '/NSF_HUBS/Nifti/derivatives/fmriprep-23.2.0'];     % <-- fill in
+        atlas = 'Seitzman300';
         TR = 1;
 end
 
